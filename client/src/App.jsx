@@ -7,6 +7,8 @@ import Unauthorized from './pages/unAuthorized'
 
 // Home
 import Home from './pages/Home/Home'
+import About from './pages/About'
+import HowItWorks from './pages/HowItWorks'
 
 // Authentication
 import Register from './pages/Auth/Register'
@@ -34,14 +36,19 @@ import HospitalDashboard from './pages/Hospital/HospitalDashboard'
 import HospitalAnalytics from './pages/Hospital/HospitalAnalytics';
 import HospitalApprovedDonor from './pages/Hospital/HospitalApprovedDonor';
 import HospitalInventory from './pages/Hospital/HospitalInventory';
+import HospitalManageInventory from './pages/Hospital/HospitalManageInventory';
 import HospitalManageRequest from './pages/Hospital/HospitalManageRequest';
+import HospitalIssuedInventory from './pages/Hospital/HospitalIssuedInventory';
+import HospitalProfileSettings from './pages/Hospital/HospitalProfileSettings';
 
 // NGO
 import NGODashboard from './pages/NGO/NGODashboard'
+import CampReport from './pages/NGO/CampReport'
 import NgoDonorRecords from './pages/NGO/NgoDonorRecords';
 import NgoReports from './pages/NGO/NgoReports';
 import OrganizeCamp from './pages/NGO/OrganizeCamp';
 import VolunteerList from './pages/NGO/VolunteerList';
+import NGOProfileSettings from './pages/NGO/NGOProfileSettings';
 
 // BloodBank
 import BloodBankDashboard from './pages/BloodBank/BloodBankDashboard'
@@ -49,6 +56,8 @@ import BloodBankReports from './pages/BloodBank/BloodBankReports';
 import BloodBankRequest from './pages/BloodBank/BloodBankRequest';
 import HospitalLinked from './pages/BloodBank/HospitalLinked';
 import ManageInventory from './pages/BloodBank/ManageInventory';
+import IssuedInventory from './pages/BloodBank/IssuedInventory';
+import BloodBankProfileSettings from './pages/BloodBank/BloodBankProfileSettings';
 
 
 
@@ -61,6 +70,8 @@ function App() {
       <Route path="/register/:role" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register_options" element={<RegisterOptions />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/how-it-works" element={<HowItWorks />} />
 
       {/* Donor */}
       <Route element={<ProtectedRoute allowedRoles={["donor"]} />}>
@@ -87,17 +98,22 @@ function App() {
         <Route path="/hospital/dashboard" element={<HospitalDashboard />} />
         <Route path="/hospital/analytics" element={<HospitalAnalytics />} />
         <Route path="/hospital/approved_donors" element={<HospitalApprovedDonor />} />
-        <Route path="/hospital/inventory" element={<HospitalInventory />} />
+        <Route path="/hospital/inventory" element={<HospitalManageInventory />} />
+        <Route path="/hospital/manage-inventory" element={<HospitalManageInventory />} />
+        <Route path="/hospital/issued" element={<HospitalIssuedInventory />} />
         <Route path="/hospital/requests" element={<HospitalManageRequest />} />
+        <Route path="/hospital/profile" element={<HospitalProfileSettings />} />
       </Route>
 
       {/* NGO */}
       <Route element={<ProtectedRoute allowedRoles={["ngo"]} />}>
         <Route path="/ngo/dashboard" element={<NGODashboard />} />
+        <Route path="/ngo/camps/:id/report" element={<CampReport />} />
         <Route path="/ngo/donor_records" element={<NgoDonorRecords />} />
         <Route path="/ngo/reports" element={<NgoReports />} />
         <Route path="/ngo/organize_camps" element={<OrganizeCamp />} />
         <Route path="/ngo/volunteer_list" element={<VolunteerList />} />
+        <Route path="/ngo/profile" element={<NGOProfileSettings />} />
       </Route>
 
 
@@ -108,6 +124,8 @@ function App() {
         <Route path="/bloodbank/requests" element={<BloodBankRequest />} />
         <Route path="/bloodbank/hospital_linked" element={<HospitalLinked />} />
         <Route path="/bloodbank/inventory" element={<ManageInventory />} />
+        <Route path="/bloodbank/issued" element={<IssuedInventory />} />
+        <Route path="/bloodbank/profile" element={<BloodBankProfileSettings />} />
       </Route>
 
 

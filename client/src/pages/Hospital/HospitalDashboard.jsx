@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/HospitalComponent/Navbar";
 import Card from "../../components/HospitalComponent/Card";
+import api from "../../lib/api";
 
 const HospitalDashboard = () => {
   const [user, setUser] = useState({});
@@ -8,18 +9,20 @@ const HospitalDashboard = () => {
   const [requests, setRequests] = useState([]);
   const [stats, setStats] = useState({});
 
-  // useEffect(() => {
-  //   // Example: Fetch dashboard data dynamically from backend
-  //   fetch("http://localhost:8080/api/hospital/dashboard-data")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setUser(data.user);
-  //       setAvailableBlood(data.bloodInventory);
-  //       setRequests(data.pendingRequests);
-  //       setStats(data.stats);
-  //     })
-  //     .catch((err) => console.error("Error fetching dashboard:", err));
-  // }, []);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const { data } = await api.get("/api/hospital/dashboard-data");
+        setUser(data.user || {});
+        setAvailableBlood(data.bloodInventory || []);
+        setRequests(data.pendingRequests || []);
+        setStats(data.stats || {});
+      } catch (err) {
+        console.error("Error fetching dashboard:", err);
+      }
+    };
+    load();
+  }, []);
 
   return (
     <div className="bg-gray-100 min-h-screen">

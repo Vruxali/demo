@@ -9,6 +9,11 @@ const bodyParser = require("body-parser");
 
 const userRoutes = require("./routers/userRoutes/userRoute");
 const bloodRequestRoutes = require("./routers/bloodRoutes/bloodRequestRoute");
+const hospitalRoutes = require("./routers/hospitalRoutes/hospitalDashboardRoute");
+const bloodBankRoutes = require("./routers/bloodBankRoutes/bloodBankRoute");
+const inventoryRoutes = require("./routers/inventoryRoutes/inventoryRoute");
+const campRoutes = require("./routers/campRoutes/campRoute");
+const campRegistrationRoutes = require("./routers/campRoutes/campRegistrationRoute");
 
 const app = express();
 
@@ -46,16 +51,37 @@ io.on("connection", (socket) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/blood-request", bloodRequestRoutes);
+app.use("/api/hospital", hospitalRoutes);
+app.use("/api/blood-bank", bloodBankRoutes);
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/camps", campRoutes);
+app.use("/api/camp-registrations", campRegistrationRoutes);
 
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-const PORT = process.env.PORT || 8080;
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
+// Robust port selection with fallback to next ports if busy
+const basePort = Number(process.env.PORT) || 8080;
+let attempts = 0;
+const maxAttempts = 5; // try 8080..8085
+
+const tryListen = (port) => {
+  server.listen(port, "0.0.0.0", () => {
+    console.log(`Server running on port ${port}`);
+  });
+};
+
+server.on("error", (err) => {
+  if (err && err.code === "EADDRINUSE" && attempts < maxAttempts) {
+    const nextPort = basePort + (++attempts);
+    console.warn(`Port ${nextPort - 1} in use; trying ${nextPort}...`);
+    tryListen(nextPort);
+    return;
+  }
+  console.error("Server error:", err);
+  process.exit(1);
 });
+
+tryListen(basePort);

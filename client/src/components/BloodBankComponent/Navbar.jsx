@@ -1,5 +1,6 @@
 import React from "react";
-import { Bell , Droplet , User } from "lucide-react";
+import { Droplet } from "lucide-react";
+import { NavLink, Link } from "react-router-dom";
 
 
 
@@ -7,30 +8,38 @@ const Topbar = () => {
   const navLinks = [
     { name: "Dashboard", path: "/bloodbank/dashboard" },
     { name: "Manage Inventory", path: "/bloodbank/inventory" },
+    { name: "Issued Inventory", path: "/bloodbank/issued" },
     { name: "Hospital Linked", path: "/bloodbank/hospital_linked" },
     { name: "Manage Requests", path: "/bloodbank/requests" },
     { name: "Reports", path: "/bloodbank/reports" },
+    { name: "Profile", path: "/bloodbank/profile" },
   ];
 
   return (
     <nav className="bg-white shadow px-6 py-4 flex justify-between items-center">
-      <div className="flex items-center gap-2">
+      <Link to="/" className="flex items-center gap-2">
         <Droplet className="text-red-600 w-6 h-6" />
         <h1 className="text-xl font-bold text-red-600">BloodCare</h1>
-      </div>
+      </Link>
 
       <ul className="hidden md:flex items-center gap-6 text-gray-600 font-medium">
-        <li className="cursor-pointer hover:text-red-600">Dashboard</li>
-        <li className="cursor-pointer hover:text-red-600">Manage Inventory</li>
-        <li className="cursor-pointer hover:text-red-600">Hospital Linked</li>
-        <li className="cursor-pointer hover:text-red-600">Requests</li>
-        <li className="cursor-pointer hover:text-red-600">Reports</li>
+        {navLinks.map((link, index) => (
+          <li key={index}>
+            <NavLink
+              to={link.path}
+              className={({ isActive }) =>
+                `cursor-pointer transition-colors ${
+                  isActive ? "text-red-600 font-semibold" : "hover:text-red-600"
+                }`
+              }
+            >
+              {link.name}
+            </NavLink>
+          </li>
+        ))}
       </ul>
 
-      <div className="flex items-center gap-4">
-        {/* <Bell className="text-gray-600 w-5 h-5" />
-        <User className="text-gray-600 w-5 h-5" /> */}
-      </div>
+      <div className="flex items-center gap-4" />
     </nav>
   );
 };

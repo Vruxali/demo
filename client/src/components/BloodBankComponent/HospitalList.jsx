@@ -22,9 +22,7 @@ const HospitalList = ({ hospitals }) => {
                 </p>
               </div>
             </div>
-            <button className="text-blue-600 text-sm font-medium hover:underline">
-              View
-            </button>
+            {/* Action removed per request: no view link on dashboard */}
           </div>
         ))}
       </div>

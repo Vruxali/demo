@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import Navbar from "../../components/DonorComponent/Navbar";
+import { useNavigate } from "react-router-dom";
 
 export default function DonorProfileSettings() {
   const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
@@ -52,14 +53,18 @@ export default function DonorProfileSettings() {
 
         const totalDonations = donations.length;
 
-        const lastDonation =
-          totalDonations > 0
-            ? new Date(
-                donations.sort(
-                  (a, b) => new Date(b.date) - new Date(a.date)
-                )[0].date
-              ).toLocaleDateString("en-IN")
-            : "N/A";
+        const lastDonation = totalDonations > 0
+          ? (() => {
+              const sorted = [...donations].sort((a, b) => {
+                const aTS = typeof a.dateTS === 'number' ? a.dateTS : (a.dateISO ? Date.parse(a.dateISO) : Date.parse(a.date));
+                const bTS = typeof b.dateTS === 'number' ? b.dateTS : (b.dateISO ? Date.parse(b.dateISO) : Date.parse(b.date));
+                return (bTS || 0) - (aTS || 0);
+              });
+              const top = sorted[0];
+              const ts = typeof top.dateTS === 'number' ? top.dateTS : (top.dateISO ? Date.parse(top.dateISO) : Date.parse(top.date));
+              return ts ? new Date(ts).toLocaleDateString('en-IN') : 'N/A';
+            })()
+          : "N/A";
 
         // ✅ Merge stats into donorDetails
         setUserData((prev) => ({
@@ -107,6 +112,13 @@ export default function DonorProfileSettings() {
       console.error(err);
       alert("Failed to update profile");
     }
+  };
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   if (!userData)
@@ -341,6 +353,13 @@ export default function DonorProfileSettings() {
                   }`}
                 >
                   Save Changes
+                </button>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="px-6 py-2 rounded-lg font-semibold text-red-600 border border-red-600 bg-white hover:bg-red-50"
+                >
+                  Logout
                 </button>
               </div>
             </form>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Bell, User, Droplet } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 
 const Navbar = ({ user }) => {
@@ -15,10 +15,10 @@ const Navbar = ({ user }) => {
 
   return (
     <nav className="bg-white shadow px-6 py-4 flex justify-between items-center">
-      <div className="flex items-center gap-2">
+      <Link to="/" className="flex items-center gap-2">
         <Droplet className="text-red-600 w-6 h-6" />
         <h1 className="text-xl font-bold text-red-600">BloodCare</h1>
-      </div>
+      </Link>
 
       {/* Nav Links */}
       <ul className="hidden md:flex items-center gap-6 text-gray-600 font-medium">

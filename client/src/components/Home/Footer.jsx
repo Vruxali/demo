@@ -1,42 +1,13 @@
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12 px-6 md:px-20">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-        <div>
-          <h3 className="text-white font-bold text-xl mb-2">BloodConnect</h3>
-          <p className="text-sm">
-            Connecting lives through blood donation. Building a healthier community together.
-          </p>
-          <div className="flex gap-3 mt-4">
-            <a href="#">🌐</a>
-            <a href="#">🐦</a>
-            <a href="#">💼</a>
-          </div>
-        </div>
-
-        <div>
-          <h4 className="text-white font-semibold mb-2">Quick Links</h4>
-          <ul className="space-y-1 text-sm">
-            <li>About Us</li>
-            <li>Privacy Policy</li>
-            <li>Terms of Service</li>
-            <li>FAQs</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-white font-semibold mb-2">Contact</h4>
-          <ul className="space-y-1 text-sm">
-            <li>📧 info@bloodconnect.com</li>
-            <li>📞 (555) 123-4567</li>
-            <li>🏠 123 Health St, Medical City</li>
-          </ul>
-        </div>
+    <footer className="bg-gray-900 text-gray-200 py-8 px-6">
+      <div className="max-w-5xl mx-auto text-center space-y-3">
+        <h3 className="text-white text-lg font-semibold">BloodCare — College Project</h3>
+        <p className="text-sm text-gray-400">
+          Developed as a college assignment. This application is a functional demonstration only.
+        </p>
+        <p className="text-xs text-gray-500">Data and workflows are illustrative and not real.</p>
       </div>
-
-      <p className="text-center text-xs mt-10 text-gray-500">
-        © 2025 BloodConnect. All rights reserved.
-      </p>
     </footer>
   );
 }

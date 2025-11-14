@@ -30,29 +30,20 @@ const DonorDonationHistory = () => {
           let nextDate = "N/A";
 
           if (total > 0) {
-            // ✅ Sort donations by date (latest first)
-            const sortedDonations = [...data.donations].sort(
-              (a, b) => new Date(b.date) - new Date(a.date)
-            );
+            // Prefer machine-friendly fields
+            const sortedDonations = [...data.donations].sort((a, b) => {
+              const aTS = typeof a.dateTS === 'number' ? a.dateTS : (a.dateISO ? Date.parse(a.dateISO) : Date.parse(a.date));
+              const bTS = typeof b.dateTS === 'number' ? b.dateTS : (b.dateISO ? Date.parse(b.dateISO) : Date.parse(b.date));
+              return (bTS || 0) - (aTS || 0);
+            });
 
-            // ✅ Parse last donation date safely
-            const rawDate = sortedDonations[0].date;
-            let lastDonation;
+            const top = sortedDonations[0];
+            const ts = typeof top.dateTS === 'number' ? top.dateTS : (top.dateISO ? Date.parse(top.dateISO) : Date.parse(top.date));
 
-            if (rawDate.includes("/")) {
-              // Handle DD/MM/YYYY format
-              const parts = rawDate.split("/");
-              lastDonation = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-            } else {
-              // Handle ISO or other formats (e.g., 2025-11-10T00:00:00Z)
-              lastDonation = new Date(rawDate);
+            if (ts) {
+              const eligibleDate = new Date(ts + 90 * 24 * 60 * 60 * 1000);
+              nextDate = eligibleDate.toLocaleDateString('en-IN');
             }
-
-            // ✅ Add 90 days
-            const eligibleDate = new Date(
-              lastDonation.getTime() + 90 * 24 * 60 * 60 * 1000
-            );
-            nextDate = eligibleDate.toLocaleDateString("en-IN");
           }
 
           setStats({

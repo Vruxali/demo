@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { User, CalendarHeart } from "lucide-react";
 import axios from "axios";
 import Navbar from "../../components/PatientComponent/Navbar";
+import { useNavigate } from "react-router-dom";
 
 export default function PatientProfileSettings() {
   const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
@@ -80,6 +81,12 @@ export default function PatientProfileSettings() {
       console.error(err);
       alert("Failed to update profile");
     }
+  };
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   if (!userData)
@@ -265,6 +272,13 @@ export default function PatientProfileSettings() {
                   }`}
                 >
                   Save Changes
+                </button>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="px-6 py-2 rounded-lg font-semibold text-red-600 border border-red-600 bg-white hover:bg-red-50"
+                >
+                  Logout
                 </button>
               </div>
             </form>

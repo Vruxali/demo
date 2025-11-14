@@ -196,11 +196,16 @@ exports.getMyDonationHistory = async (req, res) => {
         const match = s.approvedBy?.userId?.toString() === donorId.toString();
 
         if (match) {
+          const approvedAt = s.approvedBy?.at ? new Date(s.approvedBy.at) : new Date(s.requestDate);
           donations.push({
-            date: new Date(s.requestDate).toLocaleDateString("en-IN"),
+            // Human-friendly
+            date: approvedAt.toLocaleDateString("en-IN"),
+            // Machine-friendly
+            dateISO: approvedAt.toISOString(),
+            dateTS: approvedAt.getTime(),
             location: s.hospitalName || s.city || "—",
             bloodType: s.bloodGroup || "—",
-            units: s.units || 1, 
+            units: s.unitsRequired || 1,
             status: s.status || "approved",
             certificate: false,
           });
