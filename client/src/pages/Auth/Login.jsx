@@ -26,7 +26,7 @@ const Login = () => {
       return;
     }
 
-    // ✅ Store login in context and localStorage for persistence
+    // Store login in context and localStorage for persistence
     login(user, token);
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));

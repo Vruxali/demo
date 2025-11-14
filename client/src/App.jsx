@@ -29,7 +29,7 @@ import RequestBloodPage from './pages/Patient/RequestBloodPage'
 import PatientProfileSettings from './pages/Patient/PatientProfileSettings';
 import NearbyDonors from './pages/Patient/NearbyDonors'
 import BloodRequestTable from './pages/Patient/BloodHistory';
-import ApprovedDonor from './pages/Patient/ApprovedDonor'
+// import ApprovedDonor from './pages/Patient/ApprovedDonor'
 
 // Hospital
 import HospitalDashboard from './pages/Hospital/HospitalDashboard'

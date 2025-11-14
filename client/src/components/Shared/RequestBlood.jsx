@@ -121,7 +121,7 @@ export default function RequestBlood() {
 
     const data = await res.json();
     if (!res.ok) return alert(data.message);
-    alert("✅ Blood request submitted!");
+    alert("Blood request submitted!");
     socketRef.current.emit("requestCreatedClient", data.request);
 
     setForm({
