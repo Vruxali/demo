@@ -60,6 +60,15 @@ const userInsert = async (req, res) => {
     const { fullName, email, phone, age, gender, city, password, role } =
       req.body;
 
+    // Debug: log incoming registration payload summary (helps diagnose missing fields)
+    try {
+      console.log("[userInsert] incoming register role:", role);
+      console.log("[userInsert] body keys:", Object.keys(req.body || {}));
+      console.log("[userInsert] file fields:", Object.keys(req.files || {}));
+    } catch (dbgErr) {
+      console.warn("[userInsert] debug log failed:", dbgErr && dbgErr.message);
+    }
+
     if (!email || !password || !role) {
       return res
         .status(400)
@@ -209,7 +218,13 @@ const userInsert = async (req, res) => {
     const newUser = new userModel(userData);
     const savedUser = await newUser.save();
 
-    global._io.emit("userRegistered", newUser);
+    // Emit socket event if socket.io is available on the app
+    try {
+      const io = req.app && req.app.get ? req.app.get("io") : null;
+      if (io) io.emit("userRegistered", savedUser);
+    } catch (e) {
+      console.warn("[userInsert] socket emit failed:", e && e.message);
+    }
 
     res.status(201).json({
       message: "User created successfully!",
