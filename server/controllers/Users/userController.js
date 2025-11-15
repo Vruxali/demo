@@ -8,6 +8,7 @@ const roleFieldMap = {
   donor: [
     "bloodGroup",
     "weight",
+    "disease",
     "lastDonationDate",
     "availableForDonation",
     "medicalCondition",
@@ -156,7 +157,32 @@ const userInsert = async (req, res) => {
         ) {
           value = value.toLowerCase() === "yes";
         }
+        // Convert weight to number for donors
+        if (field === "weight" && typeof value === "string") {
+          value = Number(value);
+        }
         detailObject[field] = value;
+      }
+    }
+
+    // ===== Donor Eligibility Validation =====
+    if (role === "donor") {
+      const weight = Number(req.body.weight);
+      const disease = req.body.disease || "";
+
+      // Weight validation
+      if (!weight || weight < 45) {
+        return res.status(400).json({ 
+          message: "Sorry, you are underweight. Minimum weight required is 45 kg. You are not eligible to donate blood." 
+        });
+      }
+
+      // Disease validation
+      const ineligibleDiseases = ["Cancer", "HIV", "Hepatitis B", "Hepatitis C", "Cardiac Condition", "Diabetes", "Hypertension"];
+      if (disease && disease !== "Fully Fit" && ineligibleDiseases.includes(disease)) {
+        return res.status(400).json({ 
+          message: `You are not eligible for donation due to: ${disease}. Please consult with a medical professional.` 
+        });
       }
     }
 

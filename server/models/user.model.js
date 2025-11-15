@@ -19,9 +19,10 @@ const userSchema = new mongoose.Schema(
       type: {
         bloodGroup: String,
         availableForDonation: { type: Boolean, default: false },
-        weight: String,
-        lastDonationDate: Date,
+        weight: Number,
         medicalCondition: String,
+        disease: String,
+        lastDonationDate: Date,
         idProofType: String,
         idProofNumber: String,
         idProofFile: String,

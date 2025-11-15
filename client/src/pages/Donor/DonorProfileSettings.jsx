@@ -289,6 +289,65 @@ export default function DonorProfileSettings() {
                   </select>
                 </div>
 
+                {/* Weight */}
+                <div>
+                  <label className="text-sm text-gray-600">Weight (kg)</label>
+                  <input
+                    type="number"
+                    name="weight"
+                    value={userData?.donorDetails?.weight || ""}
+                    onChange={(e) => {
+                      if (!isEditable) return;
+                      setUserData((prev) => ({
+                        ...prev,
+                        donorDetails: {
+                          ...prev.donorDetails,
+                          weight: e.target.value,
+                        },
+                      }));
+                    }}
+                    disabled={!isEditable}
+                    min="45"
+                    className={`w-full mt-1 p-2 border rounded-lg ${
+                      !isEditable ? "bg-gray-100 cursor-not-allowed" : ""
+                    }`}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Minimum: 45 kg</p>
+                </div>
+
+                {/* Medical Status / Disease */}
+                <div>
+                  <label className="text-sm text-gray-600">Medical Status</label>
+                  <select
+                    name="disease"
+                    value={userData?.donorDetails?.disease || ""}
+                    onChange={(e) => {
+                      if (!isEditable) return;
+                      setUserData((prev) => ({
+                        ...prev,
+                        donorDetails: {
+                          ...prev.donorDetails,
+                          disease: e.target.value,
+                        },
+                      }));
+                    }}
+                    disabled={!isEditable}
+                    className={`w-full mt-1 p-2 border rounded-lg ${
+                      !isEditable ? "bg-gray-100 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Fully Fit">Fully Fit</option>
+                    <option value="Cancer">Cancer</option>
+                    <option value="HIV">HIV</option>
+                    <option value="Hepatitis B">Hepatitis B</option>
+                    <option value="Hepatitis C">Hepatitis C</option>
+                    <option value="Cardiac Condition">Cardiac Condition</option>
+                    <option value="Diabetes">Diabetes</option>
+                    <option value="Hypertension">Hypertension</option>
+                  </select>
+                </div>
+
                 {/* Address */}
                 <div className="sm:col-span-2">
                   <label className="text-sm text-gray-600">Address</label>

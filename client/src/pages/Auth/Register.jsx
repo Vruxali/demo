@@ -25,6 +25,16 @@ const medicalConditions = [
   "Cancer (certain types)",
   "Cardiac Condition",
 ];
+const diseases = [
+  "Fully Fit",
+  "Cancer",
+  "HIV",
+  "Hepatitis B",
+  "Hepatitis C",
+  "Cardiac Condition",
+  "Diabetes",
+  "Hypertension",
+];
 const ngoTypes = ["Charitable", "Service", "Participatory", "Empowering"];
 const yesNo = ["Yes", "No"];
 
@@ -51,6 +61,10 @@ function getFieldsByRole(role) {
         { name: "city", label: "City", type: "select", options: cities.map((c) => c.name), required: true },
         { name: "state", label: "State", type: "text", required: true, readOnly: true },
         { name: "pincode", label: "Pincode", type: "text", required: false },
+        ...(role === "donor" ? [
+          { name: "weight", label: "Weight (kg)", type: "number", required: true },
+          { name: "disease", label: "Medical Status", type: "select", options: diseases, required: true }
+        ] : []),
         { name: "idProofType", label: "ID Proof Type", type: "select", options: idProofTypes, required: true },
         { name: "idProofNumber", label: "ID Proof Number", type: "text", required: false },
         { name: "idProofFile", label: "ID Proof File", type: "file", required: true },
@@ -132,10 +146,19 @@ function validateField(field, value, allData, role) {
       if (value && (isNaN(value) || value < 18 || value > 60))
         return "Age must be between 18 and 60";
       break;
-       case "weight":
-      if (!value && allData.dob) return "Weight is required";
-      if (value && (isNaN(value) || value < 45))
-        return "Sorry you are underweight you can't donate";
+    case "weight":
+      if (!value) return "Weight is required";
+      if (isNaN(value) || value < 45)
+        return "Sorry you are underweight. Minimum weight required is 45 kg. You are not eligible to donate blood.";
+      break;
+    case "disease":
+      if (!value) return "Medical status is required";
+      if (value !== "Fully Fit") {
+        const ineligibleDiseases = ["Cancer", "HIV", "Hepatitis B", "Hepatitis C", "Cardiac Condition", "Diabetes", "Hypertension"];
+        if (ineligibleDiseases.includes(value)) {
+          return `You are not eligible for donation due to: ${value}. Please consult with a medical professional.`;
+        }
+      }
       break;
     case "email":
       if (!value) return "This field is required";
